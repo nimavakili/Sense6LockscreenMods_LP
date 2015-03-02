@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="UI">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:disableDependentsState="true"
+            android:key="panelAlignBottom"
+            android:summary="Shifts the panel to the bottom of the screen to match the Homescreen"
+            android:title="Align Shortcut Panel to the Bottom" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="panelAlignBottom"
+            android:disableDependentsState="true"
+            android:key="hideCarrier"
+            android:summary="Hides carrier label at the bottom of lockscreen"
+            android:title="Hide Carrier Label" />
+
+        <EditTextPreference
+            android:defaultValue=""
+            android:dependency="hideCarrier"
+            android:key="carrierText"
+            android:summary="Sets custom text for carrier label\nEmpty for default\nSupports basic HTML tags"
+            android:title="Set Custom Carrier Text" />
+
+        <EditTextPreference
+            android:defaultValue=""
+            android:key="hintText"
+            android:summary="Sets custom text for hint label above the panel\nEmpty for default\nDoes not support HTML tags yet!"
+            android:title="Set Custom Hint Text" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="hidePanel"
+            android:disableDependentsState="true"
+            android:title="Hide Shortcuts" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="UX">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="nukeHidePanel"
+            android:dependency="hidePanel"
+            android:summary="Disables the default hiding of shortcuts when swiping to unlock screen"
+            android:title="Disable Hide Shortcuts on Swipe" />
+
+        <ListPreference
+            android:defaultValue="default"
+            android:key="shortcut0"
+            android:dependency="hidePanel"
+            android:title="Override 1st Shortcut" />
+        <ListPreference
+            android:defaultValue="default"
+            android:key="shortcut1"
+            android:dependency="hidePanel"
+            android:title="Override 2nd Shortcut" />
+        <ListPreference
+            android:defaultValue="default"
+            android:key="shortcut2"
+            android:dependency="hidePanel"
+            android:title="Override 3rd Shortcut" />
+        <ListPreference
+            android:defaultValue="default"
+            android:key="shortcut3"
+            android:dependency="hidePanel"
+            android:title="Override 4th Shortcut" />
+
+        <ListPreference
+            android:defaultValue="default"
+            android:entries="@array/usSensitivityEntries"
+            android:entryValues="@array/usSensitivityValues"
+            android:key="unlockSensitivity"
+            android:summary="To change the minimum unlock drag distance required"
+            android:title="Change Unlock Swipe Sensitivity" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="forceDoubleTap"
+            android:summary="Enables double tap to sleep in stock M7 ROM"
+            android:title="Force Enable Double Tap to Sleep" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen><!-- From: file:/C:/Users/Nima/Android%20Workspace/Xposed/Sense%206%20Lockscreen%20Mods/app/src/main/res/xml/prefs.xml -->

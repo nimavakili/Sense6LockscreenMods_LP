@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/C:/Users/Nima/Android%20Workspace/Xposed/Sense%206%20Lockscreen%20Mods/app/src/main/res/values/arrays.xml -->
+    <eat-comment/>
+    <string-array name="bgPrefEntries">
+        <item>Default</item>
+        <item>No Dimming</item>
+        <item>Always Dim</item>
+    </string-array>
+    <string-array name="bgPrefValues">
+        <item>default</item>
+        <item>noDim</item>
+        <item>dim</item>
+    </string-array>
+    <string-array name="dwPrefEntries">
+        <item>Default</item>
+        <item>Blank Default Widget</item>
+        <item>Remove Default Widget</item>
+        </string-array>
+    <string-array name="dwPrefValues">
+        <item>default</item>
+        <item>invisible</item>
+        <item>gone</item>
+    </string-array>
+    <string-array name="patternPrefEntries">
+        <item>Default</item>
+        <item>Move Up</item>
+        <item>Move Down 1 Step</item>
+        <item>Move Down 2 Steps</item>
+        </string-array>
+    <string-array name="patternPrefValues">
+        <item>default</item>
+        <item>up</item>
+        <item>middle</item>
+        <item>down</item>
+        </string-array>
+    <string-array name="usSensitivityEntries">
+        <item>Default</item>
+        <item>Less Sensitive (Increase Distance)</item>
+        <item>More Sensitive (Decrease Distance)</item>
+    </string-array>
+    <string-array name="usSensitivityValues">
+        <item>default</item>
+        <item>less</item>
+        <item>more</item>
+    </string-array>
+    <!-- From: file:/C:/Users/Nima/Android%20Workspace/Xposed/Sense%206%20Lockscreen%20Mods/app/src/main/res/values/colors.xml -->
+    <eat-comment/>
+    <color name="actionbar_background">#DC143C</color>
+    <color name="statusbar_background">#C61236</color>
+    <!-- From: file:/C:/Users/Nima/Android%20Workspace/Xposed/Sense%206%20Lockscreen%20Mods/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="action_settings">Settings</string>
+    <string name="app_name">Sense 6 Lockscreen Mods</string>
+    <string name="author"><i>Nima Vakili | 2015</i></string>
+    <!-- From: file:/C:/Users/Nima/Android%20Workspace/Xposed/Sense%206%20Lockscreen%20Mods/app/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <style name="AppBaseTheme" parent="android:Theme.Material">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+    <style name="AppTheme" parent="AppBaseTheme">
+        <item name="android:colorPrimary">@color/actionbar_background</item>
+        <item name="android:colorPrimaryDark">@color/statusbar_background</item>
+        <item name="android:colorAccent">@color/actionbar_background</item>
+    </style>
+</resources>

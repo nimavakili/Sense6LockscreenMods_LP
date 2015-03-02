@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="C:\Users\Nima\Android Workspace\Xposed\Sense 6 Lockscreen Mods\app\src\main\assets"><file name="xposed_init" path="C:\Users\Nima\Android Workspace\Xposed\Sense 6 Lockscreen Mods\app\src\main\assets\xposed_init"/></source></dataSet><dataSet config="debug"><source path="C:\Users\Nima\Android Workspace\Xposed\Sense 6 Lockscreen Mods\app\src\debug\assets"/></dataSet></merger>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\Nima\Android Workspace\Xposed\Sense 6 Lockscreen Mods\app\src\libs\XposedBridgeApi-20150213.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="7c15b5f3cd3bd23c20465c8971b0b78a8ee69108">
+        <dex dex="C:\Users\Nima\Android Workspace\Xposed\Sense 6 Lockscreen Mods\app\build\intermediates\pre-dexed\debug\XposedBridgeApi-20150213-9da5884b3046d5d5f8f1cb44feb397f922f22832.jar" />
+    </item>
+
+</items>

@@ -51,7 +51,7 @@ ADDED from AndroidManifest.xml:22:9
 		ADDED from AndroidManifest.xml:23:13
 	android:value
 		ADDED from AndroidManifest.xml:24:13
-activity#com.minimv.senselockscreen.MainActivity
+activity#com.minimv.senselockscreenlp.MainActivity
 ADDED from AndroidManifest.xml:25:9
 	android:label
 		ADDED from AndroidManifest.xml:27:13

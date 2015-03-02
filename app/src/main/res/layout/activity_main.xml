@@ -2,12 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.minimv.senselockscreen.MainActivity" >
+    tools:context="com.minimv.senselockscreenlp.MainActivity" >
 
 	<RelativeLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    tools:context="com.minimv.senselockscreen.MainActivity$SettingsFragment" >
+	    tools:context="com.minimv.senselockscreenlp.MainActivity$SettingsFragment" >
 
 	    <RelativeLayout
 	        android:id="@+id/container"

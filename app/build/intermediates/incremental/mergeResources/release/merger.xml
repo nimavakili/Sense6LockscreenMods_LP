@@ -16,24 +16,24 @@
         <item>Default</item>
         <item>Blank Default Widget</item>
         <item>Remove Default Widget</item>
-        </string-array><string-array name="usSensitivityValues">
-        <item>default</item>
-        <item>less</item>
-        <item>more</item>
-    </string-array><string-array name="usSensitivityEntries">
+        </string-array><string-array name="usSensitivityEntries">
         <item>Default</item>
         <item>Less Sensitive (Increase Distance)</item>
         <item>More Sensitive (Decrease Distance)</item>
+    </string-array><string-array name="usSensitivityValues">
+        <item>default</item>
+        <item>less</item>
+        <item>more</item>
+    </string-array><string-array name="bgPrefEntries">
+        <item>Default</item>
+        <item>No Dimming</item>
+        <item>Always Dim</item>
     </string-array><string-array name="patternPrefEntries">
         <item>Default</item>
         <item>Move Up</item>
         <item>Move Down 1 Step</item>
         <item>Move Down 2 Steps</item>
-        </string-array><string-array name="bgPrefEntries">
-        <item>Default</item>
-        <item>No Dimming</item>
-        <item>Always Dim</item>
-    </string-array></file><file path="C:\Users\Nima\Android Workspace\Xposed\Sense 6 Lockscreen Mods\app\src\main\res\values\colors.xml" qualifiers=""><color name="actionbar_background">#DC143C</color><color name="statusbar_background">#C61236</color></file><file path="C:\Users\Nima\Android Workspace\Xposed\Sense 6 Lockscreen Mods\app\src\main\res\values\strings.xml" qualifiers=""><string name="app_name">Sense 6 Lockscreen Mods</string><string name="author"><i>Nima Vakili | 2015</i></string></file><file path="C:\Users\Nima\Android Workspace\Xposed\Sense 6 Lockscreen Mods\app\src\main\res\values\styles.xml" qualifiers=""><style name="AppBaseTheme" parent="android:Theme.Material">
+        </string-array></file><file path="C:\Users\Nima\Android Workspace\Xposed\Sense 6 Lockscreen Mods\app\src\main\res\values\colors.xml" qualifiers=""><color name="actionbar_background">#DC143C</color><color name="statusbar_background">#C61236</color></file><file path="C:\Users\Nima\Android Workspace\Xposed\Sense 6 Lockscreen Mods\app\src\main\res\values\strings.xml" qualifiers=""><string name="app_name">Sense 6 Lockscreen Mods</string><string name="author"><i>Nima Vakili | 2015</i></string></file><file path="C:\Users\Nima\Android Workspace\Xposed\Sense 6 Lockscreen Mods\app\src\main\res\values\styles.xml" qualifiers=""><style name="AppBaseTheme" parent="android:Theme.Material">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to

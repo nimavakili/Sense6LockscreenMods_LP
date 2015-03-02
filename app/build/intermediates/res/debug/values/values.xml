@@ -50,7 +50,6 @@
     <color name="statusbar_background">#C61236</color>
     <!-- From: file:/C:/Users/Nima/Android%20Workspace/Xposed/Sense%206%20Lockscreen%20Mods/app/src/main/res/values/strings.xml -->
     <eat-comment/>
-    <string name="action_settings">Settings</string>
     <string name="app_name">Sense 6 Lockscreen Mods</string>
     <string name="author"><i>Nima Vakili | 2015</i></string>
     <!-- From: file:/C:/Users/Nima/Android%20Workspace/Xposed/Sense%206%20Lockscreen%20Mods/app/src/main/res/values/styles.xml -->

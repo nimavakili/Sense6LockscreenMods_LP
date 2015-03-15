@@ -25,6 +25,12 @@
             android:summary="Sets custom text for carrier label\nEmpty for default\nSupports basic HTML tags"
             android:title="Set Custom Carrier Text" />
 
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="moveLockIcon"
+            android:summary="Moves the lock icon slightly down to be centered with the shortcuts"
+            android:title="Move Lock Icon Down" />
+
         <EditTextPreference
             android:defaultValue=""
             android:key="hintText"

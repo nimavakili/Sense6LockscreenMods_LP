@@ -6,9 +6,13 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.text.Editable;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -31,7 +35,7 @@ import static de.robv.android.xposed.XposedHelpers.getObjectField;
 public class XposedHooks implements IXposedHookLoadPackage {
 
 	private XSharedPreferences prefs;
-	private boolean hideCarrier, panelAlignBottom, nukeHidePanel, hidePanel, forceDoubleTap; //,nukeHorizontalArrows, hideWidgetFrame, maximizeWidget, disablePatternScroll, improvePattern, improveUnlock;
+	private boolean hideCarrier, panelAlignBottom, nukeHidePanel, hidePanel, forceDoubleTap, moveLockIcon; //,nukeHorizontalArrows, hideWidgetFrame, maximizeWidget, disablePatternScroll, improvePattern, improveUnlock;
 	private String carrierText, hintText, unlockSensitivity; //, movePattern, bgDimming, defaultWidget
 	private String preShortcut0 = "";
 	private String preShortcut1 = "";
@@ -59,14 +63,18 @@ public class XposedHooks implements IXposedHookLoadPackage {
         			if (hideCarrier || panelAlignBottom) {
         				carrier.setVisibility(View.GONE);
         			}
-        			else if (!carrierText.equals("")) {
+                    else {
                         carrier.setVisibility(View.VISIBLE);
-        				if (carrierText.contains("<") && carrierText.contains(">"))
-        					carrier.setText(Html.fromHtml(carrierText));
-        				else
-        					carrier.setText(carrierText);
-        			}
+                        if (!carrierText.equals("")) {
+                            carrier.setVisibility(View.VISIBLE);
+                            if (carrierText.contains("<") && carrierText.contains(">"))
+                                carrier.setText(Html.fromHtml(carrierText));
+                            else
+                                carrier.setText(carrierText);
+                        }
+                    }
         		}
+
         	});
         }
         catch (XposedHelpers.ClassNotFoundError e) {
@@ -105,10 +113,18 @@ public class XposedHooks implements IXposedHookLoadPackage {
         		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
         			prefs.reload();
         			panelAlignBottom = prefs.getBoolean("panelAlignBottom", false);
-        			View panel = (View) param.thisObject;
+                    moveLockIcon = prefs.getBoolean("moveLockIcon", false);
+        			ViewGroup panel = (ViewGroup) param.thisObject;
                     FrameLayout.LayoutParams localLayoutParams = (FrameLayout.LayoutParams) panel.getLayoutParams();
+                    ViewGroup view = (ViewGroup) panel.getChildAt(panel.getChildCount() - 1);
+                    ViewGroup lockIconView = (ViewGroup) view.getChildAt(0);
+                    View lockIcon = lockIconView.getChildAt(lockIconView.getChildCount() - 1);
+                    RelativeLayout.LayoutParams localLayoutParams2 = (RelativeLayout.LayoutParams) lockIcon.getLayoutParams();
                     if (panel.getTag() == null) {
                         panel.setTag(localLayoutParams.bottomMargin);
+                    }
+                    if (lockIcon.getTag() == null) {
+                        lockIcon.setTag(localLayoutParams2.bottomMargin);
                     }
                     if (panelAlignBottom) {
                         localLayoutParams.bottomMargin = ((Integer) panel.getTag()) - 81;
@@ -117,6 +133,14 @@ public class XposedHooks implements IXposedHookLoadPackage {
                     else {
                         localLayoutParams.bottomMargin = (Integer) panel.getTag();
                         panel.setLayoutParams(localLayoutParams);
+                    }
+                    if (moveLockIcon) {
+                        localLayoutParams2.bottomMargin = ((Integer) lockIcon.getTag()) - 16;
+                        lockIcon.setLayoutParams(localLayoutParams2);
+                    }
+                    else {
+                        localLayoutParams2.bottomMargin = ((Integer) lockIcon.getTag());
+                        lockIcon.setLayoutParams(localLayoutParams2);
                     }
         		}
         	});
@@ -130,15 +154,15 @@ public class XposedHooks implements IXposedHookLoadPackage {
         		@Override
         		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
         			prefs.reload();
-        			hidePanel = prefs.getBoolean("hidePanel", false);
+        			//hidePanel = prefs.getBoolean("hidePanel", false);
         			nukeHidePanel = prefs.getBoolean("nukeHidePanel", false);
         			hintText = prefs.getString("hintText", "");
         			RelativeLayout panel = (RelativeLayout) param.thisObject;
         			boolean visibility = (Boolean) param.args[0];
         			int count = panel.getChildCount();
-        			final TextView mHint = (TextView) ((FrameLayout) panel.getChildAt(count-2)).getChildAt(0);
+        			TextView mHint = (TextView) ((FrameLayout) panel.getChildAt(count-2)).getChildAt(0);
                     if (mHint.getTag() == null) {
-                        mHint.setTag(false);
+                        mHint.setTag(true);
                         mHint.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -150,27 +174,55 @@ public class XposedHooks implements IXposedHookLoadPackage {
 
                             @Override
                             public void afterTextChanged(Editable s) {
-                                if (!s.toString().contains(hintText)) {
-                                    s.append("\n" + hintText);
+                                prefs.reload();
+                                hintText = prefs.getString("hintText", "");
+                                if (!hintText.equals("")) {
+                                    String hintString = "";
+                                    if (hintText.contains("<") && hintText.contains(">"))
+                                        hintString = Html.fromHtml(hintText).toString();
+                                    else
+                                        hintString = hintText;
+                                    if (!s.toString().contains(hintString)) {
+                                        if (hintText.contains("<") && hintText.contains(">")) {
+                                            //XposedBridge.log("here");
+                                            final int start = s.length();
+                                            final Spanned span = Html.fromHtml("<br/>" + hintText);
+                                            s.append(span);
+                                            final int end = s.length();
+                                            for (final Object o : span.getSpans(0, span.length(), Object.class)) {
+                                                s.setSpan(o, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                            }
+                                        } else {
+                                            s.append("\n" + hintText);
+                                        }
+                                    }
                                 }
                             }
                         });
                     }
-                    if (visibility && !hintText.equals("")) {
+                    //XposedBridge.log("V: " + visibility);
+                    if (visibility) {
                         mHint.setVisibility(View.VISIBLE);
                         mHint.setAlpha(1.0f);
-                        if (!mHint.getText().toString().contains(hintText)) {
-                            mHint.setText(hintText);
+                        String hintString = "";
+                        if (hintText.contains("<") && hintText.contains(">"))
+                            hintString = Html.fromHtml(hintText).toString();
+                        else
+                            hintString = hintText;
+                        if (!hintText.equals("") && !mHint.getText().toString().contains(hintString)) {
+                            //XposedBridge.log(mHint.getText().toString());
+                            mHint.setText(mHint.getText());
                         }
                     }
                     else {
                         mHint.setAlpha(0.0f);
                     }
-        			if (hidePanel) {
-        				param.args[0] = false;
-        			}
-        			else if (nukeHidePanel) {
-        				param.setResult(null);
+        			//if (hidePanel) {
+        			//	param.args[0] = false;
+        			//}
+        			if (nukeHidePanel) {
+        				//param.setResult(null);
+                        param.args[0] = true;
         			}
         		}
         	});
@@ -202,27 +254,71 @@ public class XposedHooks implements IXposedHookLoadPackage {
         		protected void afterHookedMethod(MethodHookParam param) {
         			prefs.reload();
         			hidePanel = prefs.getBoolean("hidePanel", false);
+                    nukeHidePanel = prefs.getBoolean("nukeHidePanel", false);
                     hintText = prefs.getString("hintText", "");
-                    panelAlignBottom = prefs.getBoolean("panelAlignBottom", false);
+                    //panelAlignBottom = prefs.getBoolean("panelAlignBottom", false);
                     carrierText = prefs.getString("carrierText", "");
                     Object mFooter = getObjectField(param.thisObject, "mFooter");
-        			if (!hintText.equals("")) {
+        			if (!hintText.equals("") || hidePanel || nukeHidePanel) {
                         callMethod(mFooter, "updateShortcutVisible", true);
                     }
-                    if (!carrierText.equals("")) {
-                        callMethod(param.thisObject, "updateOperatorName");
-                    }
+                    //if (!carrierText.equals("")) {
+                    callMethod(param.thisObject, "updateOperatorName");
+                    //}
                     callMethod(mFooter, "adjustPosition");
-                    if (!hidePanel) {
-                        if (shortcutsUpdated(true)) {
-                            callMethod(param.thisObject, "onShortcutUpdate");
-                        }
-                    }
+                    //if (!hidePanel) {
+                        //if (shortcutsUpdated(true) || hidePanel) {
+                    callMethod(param.thisObject, "onShortcutUpdate");
+                        //}
+                    //}
         		}
         	});
         }
         catch (XposedHelpers.ClassNotFoundError e) {
         	XposedBridge.log(e);
+        }
+
+        /*try {
+            findAndHookMethod("com.htc.lockscreen.keyguard.KeyguardSecurityContainer", lpparam.classLoader, "showPrimarySecurityScreen", boolean.class, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) {
+                    prefs.reload();
+                    nukeHidePanel = prefs.getBoolean("nukeHidePanel", false);
+                    if (nukeHidePanel) {
+                        param.args[0] = true;
+                        XposedBridge.log("showPrimarySecurityScreen");
+                    }
+                }
+            });
+        }
+        catch (XposedHelpers.ClassNotFoundError e) {
+            XposedBridge.log(e);
+        }*/
+
+        try {
+            findAndHookMethod("com.htc.lockscreen.widget.lockiconview.LockIconArrow", lpparam.classLoader, "setTargetIconVisible", boolean.class, float.class, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) {
+                    prefs.reload();
+                    moveLockIcon = prefs.getBoolean("moveLockIcon", false);
+                    View mTargetIcon = (View) getObjectField(param.thisObject, "mTargetIcon");
+                    LinearLayout.LayoutParams localLayoutParams = (LinearLayout.LayoutParams) mTargetIcon.getLayoutParams();
+                    if (mTargetIcon.getTag() == null) {
+                        mTargetIcon.setTag(localLayoutParams.bottomMargin);
+                    }
+                    if (moveLockIcon) {
+                        localLayoutParams.bottomMargin = ((Integer) mTargetIcon.getTag()) - 16;
+                        mTargetIcon.setLayoutParams(localLayoutParams);
+                    }
+                    else {
+                        localLayoutParams.bottomMargin = ((Integer) mTargetIcon.getTag());
+                        mTargetIcon.setLayoutParams(localLayoutParams);
+                    }
+                }
+            });
+        }
+        catch (XposedHelpers.ClassNotFoundError e) {
+            XposedBridge.log(e);
         }
 
         try {
@@ -239,10 +335,6 @@ public class XposedHooks implements IXposedHookLoadPackage {
         				param.setResult(300);
         			}
         		}
-        		/*@Override
-        		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-        			XposedBridge.log("getUnlockDistance: " + param.getResult());
-        		}*/
         	});
         }
         catch (XposedHelpers.ClassNotFoundError e) {
@@ -284,6 +376,10 @@ public class XposedHooks implements IXposedHookLoadPackage {
                 	Class<?> ShortcutInfo = findClass("com.htc.lockscreen.setting.ShortcutInfo", lpparam.classLoader);
                 	Constructor<?> siC = findConstructorExact(ShortcutInfo, Context.class);
                 	ArrayList<Object> siArrayList = new ArrayList<Object>();
+                    if (hidePanel) {
+                        param.setResult(siArrayList);
+                        return;
+                    }
                 	for (int i = 0; i < 4; i++) {
     					String shortcut = prefs.getString("shortcut" + i, "default");
                 		if (shortcut.equals("default")) {
@@ -317,7 +413,7 @@ public class XposedHooks implements IXposedHookLoadPackage {
         }
 	}
 	
-	private boolean shortcutsUpdated(boolean reset) {
+	/*private boolean shortcutsUpdated(boolean reset) {
 		prefs.reload();
 		String shortcut0 = prefs.getString("shortcut0", "default");
 		String shortcut1 = prefs.getString("shortcut1", "default");
@@ -333,5 +429,5 @@ public class XposedHooks implements IXposedHookLoadPackage {
 			return true;
 		}
 		return false;
-	}
+	}*/
 }
